@@ -190,7 +190,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-11-17 10:03:47" itemprop="dateModified" datetime="2021-11-17T10:03:47+08:00">2021-11-17</time>
+                <time title="修改时间：2021-11-17 21:42:59" itemprop="dateModified" datetime="2021-11-17T21:42:59+08:00">2021-11-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -219,8 +219,12 @@
 <h3 id="Vue的组件通信"><a href="#Vue的组件通信" class="headerlink" title="Vue的组件通信"></a>Vue的组件通信</h3><p>Vue是单向的，只能父传子。</p>
 <h1 id="错误记录"><a href="#错误记录" class="headerlink" title="错误记录"></a>错误记录</h1><p>没有template</p>
 <p>只能有一个根节点</p>
+<p>Indicate whether to send a cookie in a cross-site request by specifying its SameSite attribute</p>
+<p>不显示的报错，是由于谷歌浏览器版本更新主要是为了防止CSRF 攻击，屏蔽了第三方cookies</p>
+<p>警告信息中讲到一个<code>SameSite</code>属性，是为了限制第三方的cookies，有三个属性设置<code>Strict、Lax、None</code></p>
 <h1 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h1><ol>
 <li>Vue是单向数据流，不能修改props数据，但是Vue限制的是不允许<code>this.list=xxx</code>修改，在学习v-for时也提过：<code>list[0]=1</code>不会触发页面刷新。但是<code>list[index].name=&#39;1&#39;可以修改</code>，因为修改的是属性。</li>
+<li>只有变量才有类型 </li>
 </ol>
 
       
@@ -272,7 +276,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-11-16 22:47:54" itemprop="dateModified" datetime="2021-11-16T22:47:54+08:00">2021-11-16</time>
+                <time title="修改时间：2021-11-17 21:52:16" itemprop="dateModified" datetime="2021-11-17T21:52:16+08:00">2021-11-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -359,7 +363,11 @@
 <p>如果hexo g出现以下错误时</p>
 <p>**can not read a block mapping entry;  **</p>
 <p>无法读取块映射项，可能是source下的_posts下的md上的<strong>title</strong>或者时<strong>date</strong>或者是<strong>tags</strong>后缺少空格</p>
+<h1 id="hexo中有许多主题这里我使用next主题"><a href="#hexo中有许多主题这里我使用next主题" class="headerlink" title="hexo中有许多主题这里我使用next主题"></a>hexo中有许多主题这里我使用next主题</h1><h3 id="next主题的样式"><a href="#next主题的样式" class="headerlink" title="next主题的样式"></a>next主题的样式</h3><p>在next主题中的_config.yml中配置，</p>
+<p>以下是选择自己的主题就打开哪个即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># Schemes</span><br><span class="line"># scheme: Muse</span><br><span class="line">#scheme: Mist</span><br><span class="line">#scheme: Pisces</span><br><span class="line">scheme: Gemini</span><br></pre></td></tr></table></figure>
 
+<h3 id="next主题添加分类和标签"><a href="#next主题添加分类和标签" class="headerlink" title="next主题添加分类和标签"></a>next主题添加分类和标签</h3>
       
     </div>
 
