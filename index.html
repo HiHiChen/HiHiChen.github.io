@@ -190,7 +190,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-11-17 21:42:59" itemprop="dateModified" datetime="2021-11-17T21:42:59+08:00">2021-11-17</time>
+                <time title="修改时间：2021-11-20 15:02:12" itemprop="dateModified" datetime="2021-11-20T15:02:12+08:00">2021-11-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -213,7 +213,37 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="学习记录"><a href="#学习记录" class="headerlink" title="学习记录"></a>学习记录</h1><h3 id="Vue的组件"><a href="#Vue的组件" class="headerlink" title="Vue的组件"></a>Vue的组件</h3><p>问：组件是什么？</p>
+          <h1 id="学习记录"><a href="#学习记录" class="headerlink" title="学习记录"></a>学习记录</h1><h3 id="关于webpack"><a href="#关于webpack" class="headerlink" title="关于webpack"></a>关于webpack</h3><ol>
+<li>weback是一个javascript的静态模块打包工具</li>
+<li>webpack里一切文件皆模块，通过loader转换文件，通过plugin注入钩子</li>
+<li>最后输出由多个模块组合成的文件，webpack专注构建模块化项目</li>
+</ol>
+<h3 id="webpack的优点有啥"><a href="#webpack的优点有啥" class="headerlink" title="webpack的优点有啥"></a>webpack的优点有啥</h3><ol>
+<li>专注于处理模块化项目，能做到开箱即用，一步到位</li>
+<li>通过plugin扩展，完整好用又不失灵活</li>
+<li>通过loaedr扩展，可以让webpack把所有类型的文件都解析打包</li>
+<li>区庞大活跃，经常引入紧跟时代发展的新特性，能为大多数场景找到已有的开源扩展</li>
+</ol>
+<h3 id="webpack的构建流程是什么？"><a href="#webpack的构建流程是什么？" class="headerlink" title="webpack的构建流程是什么？"></a>webpack的构建流程是什么？</h3><p>webpack的运行流程是一个串行的过程，从启动到结束会依次执行以下流程：：</p>
+<ol>
+<li>初始化参数：从配置文件读取与合并参数，得出最终的参数</li>
+<li>开始编译：用上一步得到的参数初始化 Compiler 对象，加载所有配置的插件，开始执行编译</li>
+<li>确定入口：根据配置文件中的 entry 找出所有的入口文件</li>
+<li>编译模块：从入口文件出发，调用所有的配置的 Loader 对模块进行翻译，再找出该模块依赖的模块，在递归本步骤直到所有入口都依赖的文件都经过了本步骤的处理</li>
+<li>完成模块编译：在经过第4步使用 Loader 翻译完所有的模块后，得到了每个模块被翻译后最终内容以及它们之间的依赖关系</li>
+<li>输出资源：根据入口和模块之间的依赖关系，组装成一个个包含多个模块的 Chunk, 再把每个 Chunk 转换成一个单独的文件加入到输出列表，这步是可以修改输出内容的最后机会</li>
+<li>输出完成：在确定好输出内容后，根据配置确定输出的路径和文件名，把文件内容写入到文件系统。</li>
+</ol>
+<p>在以上过程中，webpack 会在特定的时间点广播出特定的事件，插件在监听到感兴趣的事件后会执行特定的逻辑，并且插件可以调用 webpack 提供的 API 改变 webpack 的运行结果</p>
+<h3 id="说一下-webpack-的热更新原理"><a href="#说一下-webpack-的热更新原理" class="headerlink" title="说一下 webpack 的热更新原理"></a>说一下 webpack 的热更新原理</h3><p>webpack的热更新又称热替换（Hot Module Replacement)，缩写为 HMR。这个机制可以做到不用刷新浏览器而将新变更的模块替换掉旧的模块。</p>
+<p>HMR的核心就是客户端从服务端拉去更新后的文件，准确的说是 chunk diff (chunk 需要更新的部分)，实际上 WDS(webpack-dev-server)与浏览器之间维护了一个 Websocket，当本地资源发生变化时，WDS 会向浏览器推送更新，并带上构架时的 hash，让客户端与上一次资源进行比对。客户端对比出差异后会向 WDS 发送请求来获取更改的内容(文件列表、hash)，这样客户端就可以再借助这些信息继续向 WDS 发起 jsonp 请求获取该 chunk 的增量更新。</p>
+<p>后续的部分(拿到增量更新之后如何处理？哪些状态该保留？哪些又需要更新？)由 HotModulePlugin 来完成，提供了相关的 API 以供开发者针对自身场景进行处理，像 react-hot-loader 和 vue-loader 都是借助这些 API 实现的 HMR。</p>
+<h3 id="webpack与grunt、gulp的不同"><a href="#webpack与grunt、gulp的不同" class="headerlink" title="webpack与grunt、gulp的不同"></a>webpack与grunt、gulp的不同</h3><ul>
+<li>三者之间的区别</li>
+</ul>
+<p>三者都是前端的工具，grunt和gulp在早期比较流行，现在webpoack 相对来说比较主流，不过一些轻量化的任务还是会用gulp来处理，比如单独打包css文件等。</p>
+<p>grunt和gulp是基于任务和流（Task、Stream）的。类似于jQuery，找到一个（或一类）文件，对其做一系列链式操作，更新流上的数据，整条链式操作构成了 一个任务，多个任务就构成了整个web的构建流程。</p>
+<h3 id="Vue的组件"><a href="#Vue的组件" class="headerlink" title="Vue的组件"></a>Vue的组件</h3><p>问：组件是什么？</p>
 <p>答：组件就是每一个 Vue 实例，是由标签，样式，js组成的</p>
 <p>vue是单向数据流</p>
 <h3 id="Vue的组件通信"><a href="#Vue的组件通信" class="headerlink" title="Vue的组件通信"></a>Vue的组件通信</h3><p>Vue是单向的，只能父传子。</p>
@@ -222,6 +252,8 @@
 <p>Indicate whether to send a cookie in a cross-site request by specifying its SameSite attribute</p>
 <p>不显示的报错，是由于谷歌浏览器版本更新主要是为了防止CSRF 攻击，屏蔽了第三方cookies</p>
 <p>警告信息中讲到一个<code>SameSite</code>属性，是为了限制第三方的cookies，有三个属性设置<code>Strict、Lax、None</code></p>
+<p> Error in directive foc inserted hook: “TypeError: Cannot read properties of undefined (reading ‘$nextTick’)”</p>
+<p>这个位置不能使用$nextTick</p>
 <h1 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h1><ol>
 <li>Vue是单向数据流，不能修改props数据，但是Vue限制的是不允许<code>this.list=xxx</code>修改，在学习v-for时也提过：<code>list[0]=1</code>不会触发页面刷新。但是<code>list[index].name=&#39;1&#39;可以修改</code>，因为修改的是属性。</li>
 <li>只有变量才有类型 </li>
@@ -571,7 +603,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-11-16 22:51:51" itemprop="dateModified" datetime="2021-11-16T22:51:51+08:00">2021-11-16</time>
+                <time title="修改时间：2021-11-20 15:02:13" itemprop="dateModified" datetime="2021-11-20T15:02:13+08:00">2021-11-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -665,6 +697,105 @@
 </li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- vue指令:   v-on事件绑定--&gt;</span><br><span class="line">&lt;p&gt;你要买商品的数量: &#123;&#123;count&#125;&#125;&lt;/p&gt;</span><br><span class="line">&lt;button v-on:click=&quot;addFn&quot;&gt;增加1个&lt;/button&gt;</span><br><span class="line">&lt;button v-on:click=&quot;addCountFn(5)&quot;&gt;一次加5件&lt;/button&gt;</span><br><span class="line"></span><br><span class="line">&lt;button @click=&quot;subFn&quot;&gt;减少&lt;/button&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">    export default &#123;</span><br><span class="line">        // ...其他省略</span><br><span class="line">        methods: &#123;</span><br><span class="line">            addFn()&#123; // this代表export default后面的组件对象(下属有data里return出来的属性)</span><br><span class="line">                this.count++</span><br><span class="line">            &#125;,</span><br><span class="line">            addCountFn(num)&#123;</span><br><span class="line">                this.count += num</span><br><span class="line">            &#125;,</span><br><span class="line">            subFn()&#123;</span><br><span class="line">                this.count--</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<h5 id="在Vue事件处理函数中如何拿到事件对象呢？"><a href="#在Vue事件处理函数中如何拿到事件对象呢？" class="headerlink" title="在Vue事件处理函数中如何拿到事件对象呢？"></a>在Vue事件处理函数中如何拿到事件对象呢？</h5><ul>
+<li>语法：<ul>
+<li>无传参时通过形参可以直接接收</li>
+<li>传参时，我们通过$event指代事件对象传给事件处理函数</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;a @click=&quot;one&quot; href=&quot;http://www.baidu.com&quot;&gt;阻止百度&lt;/a&gt;</span><br><span class="line">    &lt;hr&gt;</span><br><span class="line">    &lt;a @click=&quot;two(10, $event)&quot; href=&quot;http://www.baidu.com&quot;&gt;阻止去百度&lt;/a&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  methods: &#123;</span><br><span class="line">    one(e)&#123;</span><br><span class="line">      e.preventDefault()</span><br><span class="line">    &#125;,</span><br><span class="line">    two(num, e)&#123;</span><br><span class="line">      e.preventDefault()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>  @事件名.修饰符=”methods里函数”</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div @click=&quot;fatherFn&quot;&gt;</span><br><span class="line">    &lt;!-- vue对事件进行了修饰符设置, 在事件后面.修饰符名即可使用更多的功能 --&gt;</span><br><span class="line">    &lt;button @click.stop=&quot;btn&quot;&gt;.stop阻止事件冒泡&lt;/button&gt;</span><br><span class="line">    &lt;a href=&quot;http://www.baidu.com&quot; @click.prevent=&quot;btn&quot;&gt;.prevent阻止默认行为&lt;/a&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  methods: &#123;</span><br><span class="line">    fatherFn()&#123;</span><br><span class="line">      console.log(&quot;father被触发&quot;);</span><br><span class="line">    &#125;,</span><br><span class="line">    btn()&#123;</span><br><span class="line">      console.log(1);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>@keyup.enter - 监测回车按键</p>
+<p>@keyup.esc - 监测返回按键</p>
+<p>还有许多修饰符可以看官网：<a target="_blank" rel="noopener" href="https://cn.vuejs.org/v2/guide/events.html#%E6%8C%89%E9%94%AE%E4%BF%AE%E9%A5%B0%E7%AC%A6">修饰符</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;input type=&quot;text&quot; @keydown.enter=&quot;enterFn&quot;&gt;</span><br><span class="line">    &lt;hr&gt;</span><br><span class="line">    &lt;input type=&quot;text&quot; @keydown.esc=&quot;escFn&quot;&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line"> methods: &#123;</span><br><span class="line">   enterFn()&#123;</span><br><span class="line">     console.log(&quot;enter回车按键了&quot;);</span><br><span class="line">   &#125;,</span><br><span class="line">   escFn()&#123;</span><br><span class="line">     console.log(&quot;esc按键了&quot;);</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<h6 id="Vue指令双向绑定"><a href="#Vue指令双向绑定" class="headerlink" title="Vue指令双向绑定"></a>Vue指令双向绑定</h6><ul>
+<li>v-model = “vue数据变量”</li>
+<li>双向数据绑定<ul>
+<li>数据变化-&gt;视图自动同步</li>
+<li>视图变化-&gt;数据自动更新</li>
+</ul>
+</li>
+<li>最后演示：用户名绑定-Vue呢不是<strong>MVVM</strong>设计模式</li>
+</ul>
+<p>什么是MVVM和MVC</p>
+<ul>
+<li>  MVC也是一种设计模式，组织代码的结构，是model数据模型，view视图，Controller控制器，在控制器这层面里编写js代码，来控制数据和视图关联</li>
+<li>MVVM：Model-View-ViewModel的简写。即模型-视图-视图模型，VM是这个设计模式的和核心，连接v和m的桥梁，内部会监听DOM事件，监听数据对象变化来的影响对方，我们称之为数据绑定</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;!-- </span><br><span class="line">    	v-model:是实现vuejs变量和表单标签value属性, 双向绑定的指令</span><br><span class="line">    --&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;span&gt;用户名:&lt;/span&gt;</span><br><span class="line">      &lt;input type=&quot;text&quot; v-model=&quot;username&quot; /&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;span&gt;密码:&lt;/span&gt;</span><br><span class="line">      &lt;input type=&quot;password&quot; v-model=&quot;pass&quot; /&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;span&gt;来自于: &lt;/span&gt;</span><br><span class="line">      &lt;!-- 下拉菜单要绑定在select上 --&gt;</span><br><span class="line">      &lt;select v-model=&quot;from&quot;&gt;</span><br><span class="line">        &lt;option value=&quot;北京市&quot;&gt;北京&lt;/option&gt;</span><br><span class="line">        &lt;option value=&quot;南京市&quot;&gt;南京&lt;/option&gt;</span><br><span class="line">        &lt;option value=&quot;天津市&quot;&gt;天津&lt;/option&gt;</span><br><span class="line">      &lt;/select&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      username: &quot;&quot;,</span><br><span class="line">      pass: &quot;&quot;,</span><br><span class="line">      from: &quot;&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>v-model在其他表单标签的使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;!-- </span><br><span class="line">    	v-model:是实现vuejs变量和表单标签value属性, 双向绑定的指令</span><br><span class="line">    --&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;span&gt;用户名:&lt;/span&gt;</span><br><span class="line">      &lt;input type=&quot;text&quot; v-model=&quot;username&quot; /&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;span&gt;密码:&lt;/span&gt;</span><br><span class="line">      &lt;input type=&quot;password&quot; v-model=&quot;pass&quot; /&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;span&gt;来自于: &lt;/span&gt;</span><br><span class="line">      &lt;!-- 下拉菜单要绑定在select上 --&gt;</span><br><span class="line">      &lt;select v-model=&quot;from&quot;&gt;</span><br><span class="line">        &lt;option value=&quot;北京市&quot;&gt;北京&lt;/option&gt;</span><br><span class="line">        &lt;option value=&quot;南京市&quot;&gt;南京&lt;/option&gt;</span><br><span class="line">        &lt;option value=&quot;天津市&quot;&gt;天津&lt;/option&gt;</span><br><span class="line">      &lt;/select&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      username: &quot;&quot;,</span><br><span class="line">      pass: &quot;&quot;,</span><br><span class="line">      from: &quot;&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<h6 id="给v-model扩展额外功能"><a href="#给v-model扩展额外功能" class="headerlink" title="给v-model扩展额外功能"></a>给v-model扩展额外功能</h6><ul>
+<li>v-model.修饰符=”vue数据变量”<ul>
+<li>.number 以parseFloat转成数字类型</li>
+<li>.trim 去除首尾空白字符</li>
+<li>.lazy 在change时触发而非input时</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;span&gt;年龄:&lt;/span&gt;</span><br><span class="line">      &lt;input type=&quot;text&quot; v-model.number=&quot;age&quot;&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;span&gt;人生格言:&lt;/span&gt;</span><br><span class="line">      &lt;input type=&quot;text&quot; v-model.trim=&quot;motto&quot;&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;span&gt;自我介绍:&lt;/span&gt;</span><br><span class="line">      &lt;textarea v-model.lazy=&quot;intro&quot;&gt;&lt;/textarea&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      age: &quot;&quot;,</span><br><span class="line">      motto: &quot;&quot;,</span><br><span class="line">      intro: &quot;&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<h6 id="v-html的使用"><a href="#v-html的使用" class="headerlink" title="v-html的使用"></a>v-html的使用</h6><ul>
+<li>v-html=”vue数据变量”</li>
+</ul>
+<p>注意：<strong>会覆盖插值表达式</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;p v-html=&quot;str&quot;&gt;&lt;/p&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      str: &quot;&lt;span&gt;我是一个span标签&lt;/span&gt;&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<h6 id="控制标签显示或隐藏"><a href="#控制标签显示或隐藏" class="headerlink" title="控制标签显示或隐藏"></a>控制标签显示或隐藏</h6><ul>
+<li><p>语法:</p>
+<ul>
+<li>v-show=”vue变量”</li>
+<li>v-if=”vue变量”</li>
+</ul>
+</li>
+<li><p>原理:</p>
+<ul>
+<li>v-show 用的display:none隐藏（频繁切换使用）</li>
+<li>v-if直接从DOM树上移除</li>
+</ul>
+</li>
+<li><p>高级</p>
+<ul>
+<li>v-else使用</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;h1 v-show=&quot;isOk&quot;&gt;v-show的盒子&lt;/h1&gt;</span><br><span class="line">    &lt;h1 v-if=&quot;isOk&quot;&gt;v-if的盒子&lt;/h1&gt;</span><br><span class="line"></span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;p v-if=&quot;age &gt; 18&quot;&gt;我成年了&lt;/p&gt;</span><br><span class="line">      &lt;p v-else&gt;还得多吃饭&lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      isOk: true,</span><br><span class="line">      age: 15</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<h6 id="用循环生成标签"><a href="#用循环生成标签" class="headerlink" title="用循环生成标签"></a>用循环生成标签</h6><ul>
+<li><p>语法</p>
+<ul>
+<li>v-for=”(值变量，索引变量) in 目标结构”</li>
+<li>v-for=”值变量 in 目标结构”</li>
+</ul>
+</li>
+<li><p>目标结构:</p>
+<ul>
+<li>可以遍历数组 / 对象 / 数字 / 字符串</li>
+</ul>
+</li>
+<li><p>注意</p>
+<p>v-for的临时变量名不能用到v-for范围外</p>
+<p>同级标签的key值不能重复</p>
+</li>
+</ul>
+<p>分为两种情况：</p>
+<ol>
+<li>遍历数组</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div id=&quot;app&quot;&gt;</span><br><span class="line">      &lt;!-- v-for 把一组数据, 渲染成一组DOM --&gt;</span><br><span class="line">      &lt;!-- 口诀: 让谁循环生成, v-for就写谁身上 --&gt;</span><br><span class="line">      &lt;p&gt;学生姓名&lt;/p&gt;</span><br><span class="line">      &lt;ul&gt;</span><br><span class="line">        &lt;li v-for=&quot;(item, index) in arr&quot; :key=&quot;item&quot;&gt;</span><br><span class="line">          &#123;&#123; index &#125;&#125; - &#123;&#123; item &#125;&#125;</span><br><span class="line">        &lt;/li&gt;</span><br><span class="line">      &lt;/ul&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      arr: [&quot;小明&quot;, &quot;小欢欢&quot;, &quot;大黄&quot;]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>   2.遍历数组对象</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div id=&quot;app&quot;&gt;</span><br><span class="line">      &lt;!-- 省略其他 --&gt;</span><br><span class="line">      &lt;p&gt;学生详细信息&lt;/p&gt;</span><br><span class="line">      &lt;ul&gt;</span><br><span class="line">        &lt;li v-for=&quot;obj in stuArr&quot; :key=&quot;obj.id&quot;&gt;</span><br><span class="line">          &lt;span&gt;&#123;&#123; obj.name &#125;&#125;&lt;/span&gt;</span><br><span class="line">          &lt;span&gt;&#123;&#123; obj.sex &#125;&#125;&lt;/span&gt;</span><br><span class="line">          &lt;span&gt;&#123;&#123; obj.hobby &#125;&#125;&lt;/span&gt;</span><br><span class="line">        &lt;/li&gt;</span><br><span class="line">      &lt;/ul&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      // ...省略其他</span><br><span class="line">      stuArr: [</span><br><span class="line">        &#123;</span><br><span class="line">          id: 1001,</span><br><span class="line">          name: &quot;孙悟空&quot;,</span><br><span class="line">          sex: &quot;男&quot;,</span><br><span class="line">          hobby: &quot;吃桃子&quot;,</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          id: 1002,</span><br><span class="line">          name: &quot;猪八戒&quot;,</span><br><span class="line">          sex: &quot;男&quot;,</span><br><span class="line">          hobby: &quot;背媳妇&quot;,</span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
 
 
       
