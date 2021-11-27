@@ -190,7 +190,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-11-20 15:02:12" itemprop="dateModified" datetime="2021-11-20T15:02:12+08:00">2021-11-20</time>
+                <time title="修改时间：2021-11-27 10:55:16" itemprop="dateModified" datetime="2021-11-27T10:55:16+08:00">2021-11-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -213,7 +213,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="学习记录"><a href="#学习记录" class="headerlink" title="学习记录"></a>学习记录</h1><h3 id="关于webpack"><a href="#关于webpack" class="headerlink" title="关于webpack"></a>关于webpack</h3><ol>
+          <h1 id="学习记录"><a href="#学习记录" class="headerlink" title="学习记录"></a>学习记录</h1><h2 id="关于webpack"><a href="#关于webpack" class="headerlink" title="关于webpack"></a>关于webpack</h2><ol>
 <li>weback是一个javascript的静态模块打包工具</li>
 <li>webpack里一切文件皆模块，通过loader转换文件，通过plugin注入钩子</li>
 <li>最后输出由多个模块组合成的文件，webpack专注构建模块化项目</li>
@@ -243,6 +243,101 @@
 </ul>
 <p>三者都是前端的工具，grunt和gulp在早期比较流行，现在webpoack 相对来说比较主流，不过一些轻量化的任务还是会用gulp来处理，比如单独打包css文件等。</p>
 <p>grunt和gulp是基于任务和流（Task、Stream）的。类似于jQuery，找到一个（或一类）文件，对其做一系列链式操作，更新流上的数据，整条链式操作构成了 一个任务，多个任务就构成了整个web的构建流程。</p>
+<p>webpack是基于入口的。webpack会自动地递归解析入口所需要加载的所有资源文件，然后用不同的Loader来处理不同的文件，用Plugin来扩展webpack功能。</p>
+<ul>
+<li>从构建思路来说</li>
+</ul>
+<p>gulp和grunt需要开发者将整个前端构建过程分成多个Task，并合理控制所有Task的调用关系webpack需要开发者找到入口，并需要清楚对于不同的资源应该使用什么Loader做何种解析和加工</p>
+<ul>
+<li>对知识背景来说</li>
+</ul>
+<p>gulip更像后端开发者的思路，需要对于整个流程了如指掌webpack更倾向于前端开发者的思路</p>
+<h3 id="Loader和Plugin的不用"><a href="#Loader和Plugin的不用" class="headerlink" title="Loader和Plugin的不用"></a>Loader和Plugin的不用</h3><ul>
+<li>不同的作用</li>
+</ul>
+<p>Loader直译为“加载器”。webpack将一切文件视为模块，但是webpack原生是只能解析js文件，如果想将其他文件也打包的话，就会用到loader。所以loader的作用是让webpack拥有了加载和解析非javaScript文件的能力</p>
+<p>Plugin直译为 “插件”。Plugin可以扩展webpack的功能，让webpack具有更多的灵活性。在webpack运行的生命周期中会广播出许多事件，Plugin可以监听这些事件，在合适的时机通过webpack提供的API改变输出的结果</p>
+<ul>
+<li>不同的用法</li>
+</ul>
+<p>Loader在module.rules中配置，也就是说他作为模块的解析规则而存在。类型为数组，每一项都是Object，里面描述了对于什么类型的文件（test），使用什么加载（loader）和使用的参数（options）</p>
+<p>Plugin在plugins中单独配置。类型为数组，每一项是一个plugin的实例，参数都通过构造函数传入。</p>
+<h2 id="关于Vue"><a href="#关于Vue" class="headerlink" title="关于Vue"></a>关于Vue</h2><h3 id="Vue的最大优势是什么？"><a href="#Vue的最大优势是什么？" class="headerlink" title="Vue的最大优势是什么？"></a>Vue的最大优势是什么？</h3><p>简单易学，轻量级整个源码js文件不大，双向数据绑定，数据驱动视图，组件化，数据和视图分离，</p>
+<p>Vue负责关联视图和数据，作者中国人（尤雨溪），文档都是中文的，入门教程非常多，上手简单</p>
+<p>相比传统网页，Vue是单页面可以只刷新某一部分</p>
+<h3 id="Vue和jQuery的区别"><a href="#Vue和jQuery的区别" class="headerlink" title="Vue和jQuery的区别"></a>Vue和jQuery的区别</h3><p>jQuery应该算是一个插件，里面封装了各种易用的方法，方便你使用更少的代码来操作DOM标签</p>
+<p>Vue是一套框架，有自己的规则和体系与语法，特别是设计思想MVVM，让数据和视频关联绑定，省略了很多DOM操作，然后指令还给标签注入更多的功能</p>
+<h3 id="MVVM和MVC区别"><a href="#MVVM和MVC区别" class="headerlink" title="MVVM和MVC区别"></a>MVVM和MVC区别</h3><p>MVC：一种设计模式，组织代码的结构，是model数据模型，view视图，Controller控制器，在控制器这层里编写js代码，来控制数据和视图关联</p>
+<p>MVVM：即Model-View-ViewModel的简写。即模型-视图-视图模型，VM是这个设计模式的核心，连接v和m的桥梁，内部会监听DOM事件，监听数据对象变化来影响对方，我们称之为数据绑定</p>
+<h3 id="Vue2-x兼容IE哪些版本"><a href="#Vue2-x兼容IE哪些版本" class="headerlink" title="Vue2.x兼容IE哪些版本"></a>Vue2.x兼容IE哪些版本</h3><p>不支持ie8及以下，部分兼容ie9，完全兼容10以上，因为Vue的响应式原理是基于es5的Object.defineProperty()，而这个方法不支持ie8及以下</p>
+<h3 id="对Vue渐进式的理解"><a href="#对Vue渐进式的理解" class="headerlink" title="对Vue渐进式的理解"></a>对Vue渐进式的理解</h3><p>渐进式代表的含义是：主张最少，自底向上，增量开发，组件集合，便于复用</p>
+<h3 id="为什么避免v-for和v-if在一起使用"><a href="#为什么避免v-for和v-if在一起使用" class="headerlink" title="为什么避免v-for和v-if在一起使用"></a>为什么避免v-for和v-if在一起使用</h3><p>Vue处理指令时，v-for比v-if具有更高的优先级，虽然用起来也没报错，但是性能不高，如果你有5个元素被v-for循环，v-if也会分别执行5次</p>
+<h3 id="Vue中-key作用，为什么不能用索引"><a href="#Vue中-key作用，为什么不能用索引" class="headerlink" title="Vue中:key作用，为什么不能用索引"></a>Vue中:key作用，为什么不能用索引</h3><p>:key是给v-for循环生成标签颁发的唯一标识，用于性能的优化</p>
+<p>因为v-for数据项的顺序改变，Vue也不会移动DOM元素来匹配数据项的顺序，而是就地更新每个元素</p>
+<p>:key如果是索引，因为索引是连续的，如果删掉其中某一个，会导致最后一个被删除</p>
+<p>当我们在删除时，:key再根据数据来把新旧的dom对比时，删除:key不存在的对应的标签(添加也是一样的插入到指定位置，别的都不会动)</p>
+<h3 id="数据更新有时候v-for不渲染"><a href="#数据更新有时候v-for不渲染" class="headerlink" title="数据更新有时候v-for不渲染"></a>数据更新有时候v-for不渲染</h3><p>因为vue内部只能监测到数组顺序/位置的改变/数量的改变，但是植被重新赋予监测不到变更，可以用Vue.set()/vm.$set()</p>
+<h3 id="封装Vue组件的过程"><a href="#封装Vue组件的过程" class="headerlink" title="封装Vue组件的过程"></a>封装Vue组件的过程</h3><p>首先，组件可以提升整个项目的开发效率。能够把页面抽象成多个相对独立的模块，解决了我们传统项目开发：效率低、难维护、复用性等问题。</p>
+<ul>
+<li>分析需求：确定业务需求，把页面中可以复用的结构，样式以及功能，单独抽离成一个组件，实现复用</li>
+<li>具体步骤：Vue.component或者在new Vue配置项components中，定义组件名，可以在props中接受给组件传的参数和值，子组件修改好数据后，想把数据传递给父组件。可以采用$emit方法</li>
+</ul>
+<h3 id="Vue组件如何进行传值"><a href="#Vue组件如何进行传值" class="headerlink" title="Vue组件如何进行传值"></a>Vue组件如何进行传值</h3><p>父向子：props定义变量-&gt;父在使用组件用属性给props变量传值</p>
+<p>子向父：$emit触发父事件-&gt;父在使用组件用@自定义事件名=父的方(子把值带出来)</p>
+<h3 id="Vue组件data为什么必须是函数"><a href="#Vue组件data为什么必须是函数" class="headerlink" title="Vue组件data为什么必须是函数"></a>Vue组件data为什么必须是函数</h3><p>每个组件都是Vue的实例，为了独立作用域，不让变量污染别人的变量</p>
+<h3 id="Vue组件命名规范"><a href="#Vue组件命名规范" class="headerlink" title="Vue组件命名规范"></a>Vue组件命名规范</h3><p>给组件命名有两种方式(在Vue.Component/components时)，一种是使用链式命名”my-component”，一种是使用大驼峰命名”MyCompopent”</p>
+<p>因为要遵循W3C规范中的自定义组件名(字母全小写且必须包含一个连字符),避免和当前以及未来的HTML元素相冲突</p>
+<h3 id="vue生命周期总共分为几个阶段"><a href="#vue生命周期总共分为几个阶段" class="headerlink" title="vue生命周期总共分为几个阶段"></a>vue生命周期总共分为几个阶段</h3><p>Vue实例从创建到销毁的过程，就是生命周期。也就是从开始创建、初始化数据、编译模板、挂载Dom-&gt;渲染、更新-&gt;渲染、卸载等一些列过程，我们称这是Vue的生命周期。</p>
+<ol>
+<li>beforeCreate<ul>
+<li>在实例初始化之后，数据观测(data observer)和 event/watcher事件配置之前被调用</li>
+</ul>
+</li>
+<li>created<ul>
+<li>在实例创建完成后被立即调用。在这一步，实例已完成以下的配置：数据观测(data obserer),属性和方法的运算，event/watcher事件回调。然而，挂载阶段还没开始，$el属性目前不可见</li>
+</ul>
+</li>
+<li>beforeMount<ul>
+<li>在挂载开始之前被调用，相关的render函数首次被调用</li>
+</ul>
+</li>
+<li>mounted<ul>
+<li>el被新创建的vm.$el替换，并挂载到实例上去之后调用该钩子。如果root实例挂载一个文档内元素，当mounted被调用时，vm.$el也在文档内。</li>
+</ul>
+</li>
+<li>beforeUpdate<ul>
+<li>数据更新时调用，发生在虚拟DOM打补丁之前。这里更适合更新之前访问现有的DOM，比如手动移除已添加的事件监听器。该钩子在服务器端渲染期间不被调用，因为只有初次渲染会在服务端进行。</li>
+</ul>
+</li>
+<li>updated<ul>
+<li>由于数据更改导致的虚拟DOM重新渲染和打补丁，在这之后会调用该钩子</li>
+</ul>
+</li>
+<li>activated<ul>
+<li>keep-alive组件激活时调用。该钩子在服务器渲染期间不被调用。</li>
+</ul>
+</li>
+<li>deactivated<ul>
+<li>   keep-alive 组件停用时调用。该钩子在服务器端渲染期间不被调用。</li>
+</ul>
+</li>
+<li>beforeDestroy<ul>
+<li>实例销毁之前调用。在这一步，实力仍然完全可用。该钩子在服务器端渲染期间不被调用</li>
+</ul>
+</li>
+<li>destroyed<ul>
+<li>Vue实例销毁后调用。调用后，Vue实例指示的所有东西都会解绑定，所有的事件监听器会被移除，所有的子实例也会被销毁。该钩子在服务器端渲染期间不被调用。</li>
+</ul>
+</li>
+<li>errorCaptured(2.5.0新增)<ul>
+<li>当捕获一个来自子孙组件的错误时被调用。此钩子会收到三个参数：错误对象、发生错误的组件实例以及一个包含错误来源信息的字符串。此钩子可以返回false以阻止该错误继续向上传播</li>
+</ul>
+</li>
+</ol>
+<h3 id="第一次加载页面会触发哪几个钩子函数"><a href="#第一次加载页面会触发哪几个钩子函数" class="headerlink" title="第一次加载页面会触发哪几个钩子函数"></a>第一次加载页面会触发哪几个钩子函数</h3><p>beforeCreate、created、beforeMount、mounted</p>
+<h3 id="Vue的nextTick的原理是什么？"><a href="#Vue的nextTick的原理是什么？" class="headerlink" title="Vue的nextTick的原理是什么？"></a>Vue的nextTick的原理是什么？</h3><p>为什么需要nextTick，Vue是异步修改DOM的并且不鼓励开发者直接接触DOM，但有时候业务需要必须对数据更改–刷新后的DOM作相应的处理，这时候就可以使用Vue.nextTick(callback)这个api 了‘</p>
+<p>理解原理前的准备，首先需要知道事件循环中宏任务和微任务这两个概念，常见的宏任务有script, setTimeout, setInterval, setImmediate, I/O, UIrendering 常见的微任务有process.nextTick(Nodejs), Promise.then(),MutationObserver</p>
+<p>理解nextTick的原理正是Vue通过异步队列控制DOM更新和nextTick回调函数先后执行的方式。如果大家看过这部分源码，会发现其中做了很多isNative()的判断，因为这里存在兼容性优雅降级的问题。可见Vue开发团队的深思熟虑，对性能的良苦用心。</p>
 <h3 id="Vue的组件"><a href="#Vue的组件" class="headerlink" title="Vue的组件"></a>Vue的组件</h3><p>问：组件是什么？</p>
 <p>答：组件就是每一个 Vue 实例，是由标签，样式，js组成的</p>
 <p>vue是单向数据流</p>
