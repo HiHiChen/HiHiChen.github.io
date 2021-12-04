@@ -256,7 +256,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-11-27 10:55:16" itemprop="dateModified" datetime="2021-11-27T10:55:16+08:00">2021-11-27</time>
+                <time title="修改时间：2021-12-04 11:40:05" itemprop="dateModified" datetime="2021-12-04T11:40:05+08:00">2021-12-04</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -404,17 +404,127 @@
 <h3 id="Vue的nextTick的原理是什么？"><a href="#Vue的nextTick的原理是什么？" class="headerlink" title="Vue的nextTick的原理是什么？"></a>Vue的nextTick的原理是什么？</h3><p>为什么需要nextTick，Vue是异步修改DOM的并且不鼓励开发者直接接触DOM，但有时候业务需要必须对数据更改–刷新后的DOM作相应的处理，这时候就可以使用Vue.nextTick(callback)这个api 了‘</p>
 <p>理解原理前的准备，首先需要知道事件循环中宏任务和微任务这两个概念，常见的宏任务有script, setTimeout, setInterval, setImmediate, I/O, UIrendering 常见的微任务有process.nextTick(Nodejs), Promise.then(),MutationObserver</p>
 <p>理解nextTick的原理正是Vue通过异步队列控制DOM更新和nextTick回调函数先后执行的方式。如果大家看过这部分源码，会发现其中做了很多isNative()的判断，因为这里存在兼容性优雅降级的问题。可见Vue开发团队的深思熟虑，对性能的良苦用心。</p>
+<h3 id="自定义指令-v-check、v-focus-的方法以及钩子函数，钩子函数的参数？"><a href="#自定义指令-v-check、v-focus-的方法以及钩子函数，钩子函数的参数？" class="headerlink" title="自定义指令(v-check、v-focus)的方法以及钩子函数，钩子函数的参数？"></a>自定义指令(v-check、v-focus)的方法以及钩子函数，钩子函数的参数？</h3><p>全局定义指令：在vue对象的directive方法里面有两个参数，一个是指令名称，另外一个是函数。组件内定义指令：directives</p>
+<p>钩子函数：bind(绑定事件触发)、inserted(节点插入的时候触发)、updae(组件内相关更新)</p>
+<p>钩子函数参数：el、binding</p>
+<h3 id="is特性，主要用在哪些方面？"><a href="#is特性，主要用在哪些方面？" class="headerlink" title="is特性，主要用在哪些方面？"></a>is特性，主要用在哪些方面？</h3><p> 1.动态组件</p>
+<p><code>&lt;component :is=&quot;componentName&quot;&gt;&lt;/component&gt;</code></p>
+<p>componentName可以是在本页面已经注册的局部组件名和全局组件名，也可以是一个组建的选项对象。当控制componentName改变时就可以动态选择组件</p>
+<p> 2.is的用法</p>
+<p>有些HTML元素, 诸如<code>&lt;ul&gt;</code>、<code>&lt;ol&gt;</code>、<code>&lt;table&gt;</code>和<code>&lt;select&gt;</code>，对于哪些元素可以出现在其内部是有严格限制的。</p>
+<p>而有些HTML元素，诸如<code>&lt;li&gt;</code>、<code>&lt;tr&gt;</code>和<code>&lt;option&gt;</code>只能出现在某些特定元素的内部。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;ul&gt;</span><br><span class="line">  &lt;card-list&gt; &lt;/card-list&gt;</span><br><span class="line">&lt;/ul&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这么写<code>&lt;card-list&gt;&lt;/card-list&gt;</code>会被作为无效的内容提升到外部，并导致最终渲染结果出错</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;ul&gt;</span><br><span class="line"> &lt;li :is=&quot;cardList&quot;&gt;&lt;/li&gt;</span><br><span class="line">&lt;/ul&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="路由之间是怎么跳转的？有哪些方式"><a href="#路由之间是怎么跳转的？有哪些方式" class="headerlink" title="路由之间是怎么跳转的？有哪些方式"></a>路由之间是怎么跳转的？有哪些方式</h3><ol>
+<li><code>&lt;router-link to=&quot;需要跳转到页面的路径&quot;&gt;&lt;/router-link&gt;</code></li>
+<li>this.$router.push()跳转到指定url，并在history中添加记录，点击回退返回上一个页面</li>
+<li>this.$router.replace()跳转到指定的url，但是不会在history中记录，点击回退回退到上上个页面</li>
+<li>this.$router.go(n)向前或者向后跳转n个页面，n可以是正数也可以是负数</li>
+</ol>
+<h3 id="vue-router怎么配置路由"><a href="#vue-router怎么配置路由" class="headerlink" title="vue-router怎么配置路由"></a>vue-router怎么配置路由</h3><p>在vue中配置路由分为5个步骤</p>
+<ol>
+<li>引入vue-router.js</li>
+<li>配置路由path和组件，在生成路由对象</li>
+<li>把路由对象配置到new Vue中的router选项下</li>
+<li>页面使用<code>&lt;router-view&gt;&lt;/router-view&gt;</code>承载路由</li>
+<li><code>&lt;router-link to=&quot;需要跳转的路径&quot;&gt;&lt;/router-link&gt;</code>设置路由导航(声明式导航/编程式跳转)</li>
+</ol>
+<h3 id="vue-toouter-的钩子函数有哪些"><a href="#vue-toouter-的钩子函数有哪些" class="headerlink" title="vue-toouter 的钩子函数有哪些"></a>vue-toouter 的钩子函数有哪些</h3><p>vue-router 中的钩子函数主要分为3类</p>
+<p>全局钩子函数 beforeEach</p>
+<p>​           beforeEach函数有三个参数, 分别为to、from、next</p>
+<p>​                to：router即将进入的路由对象</p>
+<p>​                from: 当前导航即将离开的路由</p>
+<p>​                next: function,进行管道中的一个钩子，如果执行完了，则导航</p>
+<p>​                          状态就是confirmed(确认的) 否则为false，终止导航</p>
+<p>单独路由独享组件</p>
+<p>​          beforeEnter</p>
+<p>组件内钩子</p>
+<p>​           beforeRouterEnter</p>
+<p>​           beforeRouterUpdate</p>
+<p>​           beforeRouterLeave</p>
+<h3 id="路由传值的方式有哪几种"><a href="#路由传值的方式有哪几种" class="headerlink" title="路由传值的方式有哪几种"></a>路由传值的方式有哪几种</h3><p>Vue-router传参可以分为两大类，分别是编程式导航router.push 和声明式导航 </p>
+<ul>
+<li><p>router.push</p>
+<ul>
+<li> 字符串：直接传递路由地址，但是不能传参数</li>
+</ul>
+<p>​                this.$router.push(“home”)</p>
+<ul>
+<li><p>对象：</p>
+<p> 命名路由 这种方式传递参数，目标页面刷新会报错</p>
+<p>​    -name+parmas</p>
+<p>​    this.$router.push({path:”news” , params:{userId:123}})</p>
+<p>查询参数 和path配对的是query</p>
+<p>​    this.$router.push({path:”/news”, query:{userId:123}})</p>
+<p>接收参数 this.$route.query</p>
+</li>
+</ul>
+</li>
+<li><p>声明式导航</p>
+<ul>
+<li><p>字符串<code>&lt;router-link to:&quot;news&quot;&gt;&lt;/router-link&gt;</code></p>
+</li>
+<li><p>命名路由<code>&lt;router-link :to=&quot;&#123;name:&#39;news&#39;,params:&#123;userid:1111&#125;&#125;&gt;&lt;/router-link&quot;&gt;</code></p>
+<p>还可以to=”/path/值” 需要提前在路由规则里值/path/:key</p>
+<p>查询参数<code>&lt;router-link :to=&quot;&#123;path:&#39;/news&#39;,query:&#123;userId:111&#125;&#125;&gt;&lt;/router-link&gt;&quot;</code></p>
+<p>还可以to=”/path?key=value”</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="怎么定义vue-router的动态路由？怎么获取传来的动态参数"><a href="#怎么定义vue-router的动态路由？怎么获取传来的动态参数" class="headerlink" title="怎么定义vue-router的动态路由？怎么获取传来的动态参数"></a>怎么定义vue-router的动态路由？怎么获取传来的动态参数</h3><p>动态路由指的是path路径上传值，前提需要路由规则了提前配置/path/:key名，可以写多个，用/隔开，获取使用$route.params.key名来提取对应路径传过来的值</p>
+<h3 id="Vue的路由实现模式-hash模式和history模式"><a href="#Vue的路由实现模式-hash模式和history模式" class="headerlink" title="Vue的路由实现模式: hash模式和history模式"></a>Vue的路由实现模式: hash模式和history模式</h3><p>hash模式: 在浏览器中符号#，#以及#后面的字符称之为hash，用window.location.hash读取。特点：hash虽然在URL中，但不被包括在HTTP请求中；用来指导浏览器动作，对服务端安全无用，hash不会重加载页面</p>
+<p>history模式：history采用HTML5的新特信；且提供了两个新方法：pushState()，replaceState()可以对浏览器历史记录栈进行修改，以及popState事件的监听到状态变更</p>
+<h3 id="路由配置项常用的属性及作用"><a href="#路由配置项常用的属性及作用" class="headerlink" title="路由配置项常用的属性及作用"></a>路由配置项常用的属性及作用</h3><p>路由配置参数：</p>
+<ul>
+<li>path:跳转路径</li>
+<li>component:路径相对于的组件</li>
+<li>name:命名路由</li>
+<li>children:子路由的配置参数(路由嵌套)</li>
+<li>props:路由解耦</li>
+<li>redirect:重定向路由</li>
+</ul>
+<h3 id="编程式导航使用的方法以及常用的方法"><a href="#编程式导航使用的方法以及常用的方法" class="headerlink" title="编程式导航使用的方法以及常用的方法"></a>编程式导航使用的方法以及常用的方法</h3><p>路由跳转: this.$router.push()</p>
+<p>路由替换: this.$router.replace()</p>
+<p>后退: this.$router.back()</p>
+<p>前进: this.$router.forward()</p>
+<h3 id="Vue如何去除URL中的"><a href="#Vue如何去除URL中的" class="headerlink" title="Vue如何去除URL中的#"></a>Vue如何去除URL中的#</h3><p>vue-router 默认使用 hash 模式，所以在路由加载的时候，项目中的 URL 会自带 “#”。如果不想使用 “#”， 可以使用 vue-router 的另一种模式 history：new Router ({ mode : ‘history’, routes: [ ]})</p>
+<p>​    需要注意的是，当我们启用 history 模式的时候，由于我们的项目是一个单页面应用，所以在路由跳转的时候，就会出现访问不到静态资源而出现 “404” 的情况，这时候就需要服务端增加一个覆盖所有情况的候选资源：如果 URL 匹配不到任何静态资源，则应该返回同一个 “index.html” 页面。</p>
+<h3 id="router和-route的区别"><a href="#router和-route的区别" class="headerlink" title="$router和$route的区别"></a>$router和$route的区别</h3><p>$route是路由信息对象，包括‘path，hash，query，fullPath，  matched，name’等路由信息参数；<br>        $router是路由实例对象，包括了路由的跳转方法，实例对象等</p>
+<h3 id="跟keep-alive有关的生命周期是哪些"><a href="#跟keep-alive有关的生命周期是哪些" class="headerlink" title="跟keep-alive有关的生命周期是哪些"></a>跟keep-alive有关的生命周期是哪些</h3><ol>
+<li><p>前言：在开发Vue项目的时候，大部分组件是没必要多次渲染的，所以Vue提供了一个内置组件keep-alive来缓存组件内部状态，避免重新渲染</p>
+</li>
+<li><p>生命周期函数：再被keep-alive包含的组件/路由中，会多出两个生命周期钩子:activated 与 deactivated</p>
+<ul>
+<li>activated钩子：在组件第一次渲染时会被调用，之后在每次缓存组件被激活时调用<ul>
+<li>activated钩子调用时机：第一次进入缓存路由/组件，在mounted后面，beforeRouteEnter守卫传给next的回调函数之前调用，并且因为组件被缓存了，再次进入缓存路由/组件时，不会触发这些钩子函数，beforeCreate created beforeMount mounted 都不会触发</li>
+</ul>
+</li>
+<li>deactivated钩子：组件被停用时调用<ul>
+<li>deactivated钩子调用时机：使用keep-alive就不会调用beforeDestroy(组件销毁前钩子)和destroyed(组件销毁)，因为组件没被销毁，被缓存起来了，这个钩子可以看做beforeDestroy的替代，如果你缓存了组件，要在组件被销毁的时候做一些事情，可以放在这个钩子里，组件内的离开当前路由钩子beforeRouteLeave=&gt; 路由前置守卫 beforeEach =&gt;全局后置钩子afterEach =&gt; deactivated 离开缓存组件 =&gt; activated 进入缓存组件(如果你进入的也是缓存路由)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
 <h3 id="Vue的组件"><a href="#Vue的组件" class="headerlink" title="Vue的组件"></a>Vue的组件</h3><p>问：组件是什么？</p>
 <p>答：组件就是每一个 Vue 实例，是由标签，样式，js组成的</p>
 <p>vue是单向数据流</p>
 <h3 id="Vue的组件通信"><a href="#Vue的组件通信" class="headerlink" title="Vue的组件通信"></a>Vue的组件通信</h3><p>Vue是单向的，只能父传子。</p>
 <h1 id="错误记录"><a href="#错误记录" class="headerlink" title="错误记录"></a>错误记录</h1><p>没有template</p>
 <p>只能有一个根节点</p>
-<p>Indicate whether to send a cookie in a cross-site request by specifying its SameSite attribute</p>
+<p><strong>Indicate whether to send a cookie in a cross-site request by specifying its SameSite attribute</strong></p>
 <p>不显示的报错，是由于谷歌浏览器版本更新主要是为了防止CSRF 攻击，屏蔽了第三方cookies</p>
 <p>警告信息中讲到一个<code>SameSite</code>属性，是为了限制第三方的cookies，有三个属性设置<code>Strict、Lax、None</code></p>
-<p> Error in directive foc inserted hook: “TypeError: Cannot read properties of undefined (reading ‘$nextTick’)”</p>
+<p> <strong>Error in directive foc inserted hook: “TypeError: Cannot read properties of undefined (reading ‘$nextTick’)”</strong></p>
 <p>这个位置不能使用$nextTick</p>
+<h5 id="vue的一些问题"><a href="#vue的一些问题" class="headerlink" title="vue的一些问题"></a>vue的一些问题</h5><p>1、第一个是给对象添加属性的时候，直接通过给data里面的对象添加属性然后赋值，新添加的属性不是响应式的</p>
+<p>​    【解决办法】通过Vue.set(对象，属性，值)这种方式就可以达到，对象新添加的属性是响应式的</p>
+<p>2、 在created操作dom的时候，是报错的，获取不到dom，这个时候实例vue实例没有挂载</p>
+<p>​    【解决办法】通过：Vue.nextTick(回调函数进行获取)</p>
 <h1 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h1><ol>
 <li>Vue是单向数据流，不能修改props数据，但是Vue限制的是不允许<code>this.list=xxx</code>修改，在学习v-for时也提过：<code>list[0]=1</code>不会触发页面刷新。但是<code>list[index].name=&#39;1&#39;可以修改</code>，因为修改的是属性。</li>
 <li>只有变量才有类型 </li>
